@@ -1,0 +1,18 @@
+/**
+ * simple-note-block.css
+ * 用于简单注释区块的样式
+ */
+
+.simple-note {
+    color: #666;
+    font-size: 0.9em;
+    line-height: 1.5;
+    margin-top: 20px;
+    white-space: pre-line;
+}
+
+.simple-note-editor {
+    width: 100%;
+    min-height: 100px;
+    color: #666;
+}

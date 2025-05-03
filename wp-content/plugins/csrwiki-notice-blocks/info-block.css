@@ -1,0 +1,43 @@
+/**
+ * info-block.css
+ * 用于信息区块的样式
+ */
+
+.wp-block-csrwiki-info {
+    background-color: #e3f2fd;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 1.5em 0;
+    border-left: 4px solid #2196F3;
+}
+
+.wp-block-csrwiki-info .info-header {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wp-block-csrwiki-info .info-icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.wp-block-csrwiki-info .info-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2196F3;
+    text-transform: uppercase;
+}
+
+.wp-block-csrwiki-info .info-content {
+    margin-top: 8px;
+}
+
+.wp-block-csrwiki-info .info-content > *:first-child {
+    margin-top: 0;
+}
+
+.wp-block-csrwiki-info .info-content > *:last-child {
+    margin-bottom: 0;
+}

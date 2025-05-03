@@ -1,0 +1,412 @@
+/**
+Theme Name: Astra Child
+Author: localhost test
+Author URI: http://wpastra.com/about/
+Description: Astra is the fastest, fully customizable & beautiful theme suitable for blogs, personal portfolios and business websites. It is very lightweight (less than 50KB on frontend) and offers unparalleled speed. Built with SEO in mind, Astra comes with schema.org code integrated so search engines will love your site. Astra offers plenty of sidebar options and widget areas giving you a full control for customizations. Furthermore, we have included special features and templates so feel free to choose any of your favorite page builder plugin to create pages flexibly. Some of the other features: # WooCommerce Ready # Responsive # Compatible with major plugins # Translation Ready # Extendible with premium addons # Regularly updated # Designed, Developed, Maintained & Supported by Brainstorm Force. Looking for a perfect base theme? Look no further. Astra is fast, fully customizable and beautiful theme!
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: astra-child
+Template: astra
+*/
+.entry-meta .print-button,
+.entry-meta .qr-share {
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.qr-share {
+    position: relative;
+}
+
+.qr-popup {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+#qrcode {
+    width: 100px;
+    height: 100px;
+}
+
+#qrcode img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+
+#block-10 {
+    position: sticky;
+    top: 10px;
+    /* 调整这个值来控制粘性开始的位置 */
+    max-height: calc(100vh - 40px);
+    /* 视口高度减去上下边距 */
+    overflow-y: auto;
+    /* 允许内部滚动 */
+    padding: 10px;
+    font-size: 0.9rem;
+    border-left: 1px solid #dddddd;
+    /*background: #f8f8f8; /* 为整个 widget 添加背景 */
+    /*border-radius: 8px; /* 可选：添加圆角 */
+    /*box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* 可选：添加阴影效果 */
+}
+
+
+/* 主分类容器 */
+.category-sidebar {
+    margin-bottom: 20px;
+    margin-right: 15px;
+    margin-top: 40px;
+    padding: 15px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* 当前分类标题 */
+.category-sidebar h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* 当前分类文章列表 */
+.category-post-list {
+    list-style: none; /* 去掉圆点 */
+    margin: 0;
+    padding: 0;
+}
+
+.category-post-list li {
+    margin: 8px 0; /* 调整间距 */
+}
+
+.category-post-list li a {
+    text-decoration: none;
+    color: #555;
+    display: flex; /* 让图标和文字对齐 */
+    align-items: center;
+}
+
+.category-post-list li a i {
+    margin-right: 8px; /* 图标与文字的间距 */
+    color: #aaa;
+}
+
+.category-post-list li a:hover i {
+    color: #0073aa; /* 鼠标悬停时图标颜色 */
+}
+
+/* 高亮当前文章 */
+.category-post-list li a[style*="font-weight: bold"],
+.child-category-post-list li a[style*="font-weight: bold"] {
+    font-weight: bold;
+    color: #0073aa;
+    background-color: #eef6fc; /* 添加背景色 */
+    padding: 3px 5px;
+    border-radius: 3px;
+}
+
+.category-post-list li a[style*="font-weight: bold"] i {
+    color: #0073aa; /* 高亮图标颜色 */
+}
+
+/* 子分类标题 */
+.child-category-title {
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #333;
+    margin-top: 15px;
+}
+
+.child-category-title:hover {
+    text-decoration: underline;
+}
+
+/* 当前子分类高亮 */
+.child-category-title[style*="font-weight: bold"] {
+    color: #333;
+}
+
+/* 子分类文章列表 */
+.child-category-post-list {
+    list-style: none; /* 去掉圆点 */
+    margin: 10px 0 0 15px;
+    padding: 0;
+}
+
+.child-category-post-list li {
+    margin: 8px 0;
+}
+
+.child-category-post-list li a {
+    text-decoration: none;
+    color: #555;
+    display: flex;
+    align-items: center;
+}
+
+.child-category-post-list li a i {
+    margin-right: 8px;
+    color: #aaa;
+}
+
+.child-category-post-list li a:hover i {
+    color: #0073aa;
+}
+
+.child-category-post-list li a[style*="font-weight: bold"] i {
+    color: #0073aa;
+}
+
+
+
+
+pre {
+    border-radius: 15px;
+}
+
+
+
+.favorite-button {
+    padding: 8px 15px;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.favorite-button.favorited {
+    background: #ff6b6b;
+    color: white;
+}
+
+.user-center-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.user-info {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.favorite-post-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.favorite-post-item img {
+    width: 100px;
+    height: auto;
+    margin-right: 15px;
+}
+
+.remove-favorite {
+    margin-left: auto;
+    padding: 5px 10px;
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+
+/* Admonitions 区块样式已移动到各自的CSS文件中 */
+/* simple-note-block.css, tip-block.css, warning-block.css, info-block.css */
+
+
+
+/* 在style.css中 */
+.wp-block-csrwiki-admin-only {
+    border: 2px dashed #666;
+    padding: 20px;
+    background: #f9f9f9;
+}
+
+.admin-only-header {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* 编辑器中的样式 */
+.editor-styles-wrapper .wp-block-csrwiki-admin-only {
+    border: 2px dashed #ff5722;
+    background: #fff3e0;
+}
+
+
+
+
+/* 控制astra content top注入的left-doc-sidebar 的样式 */
+/* PC端样式 */
+.left-doc-sidebar {
+    /* position: sticky; */
+    top: 60px;
+    /* height: 100vh; */
+    overflow-y: auto;
+    max-width: 25%;
+    /* border-right: 1px solid #dddddd; */
+}
+
+
+/* Dim content on menu hover */
+#masthead:hover~#content {
+	opacity: 0.1;
+	transition: all 0.5s linear 0.1s;
+}
+
+#content {
+	transition: all 0.5s linear 0.1s;
+}
+
+
+/* 测试支付 */
+.payment-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.payment-qrcode img {
+    max-width: 300px;
+    margin: 20px auto;
+    border: 1px solid #eee;
+    padding: 10px;
+}
+
+.payment-notice {
+    background: #f5f5f5;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 4px;
+}
+
+#check-payment {
+    background: #07c160;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#check-payment:hover {
+    background: #06ae56;
+}
+
+
+
+/* 在style.css中添加 */
+.csrwiki-post-tags {
+    margin: 20px 0;
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+}
+
+.csrwiki-post-tags .tags-title {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.csrwiki-post-tags .tag-link {
+    display: inline-block;
+    padding: 3px 10px;
+    margin: 2px 4px;
+    background: #f5f5f5;
+    border-radius: 3px;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+.csrwiki-post-tags .tag-link:hover {
+    background: #e5e5e5;
+    color: #333;
+}
+
+
+.article-source-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-right: 10px;
+    color: #fff;
+}
+
+.source-original {
+    background-color: #28a745;
+}
+
+.source-translated {
+    background-color: #007bff;
+}
+
+.source-repost {
+    background-color: #6c757d;
+}
+
+
+
+
+.vip-content {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.vip-badge {
+    background-color: #ffcc00;
+    color: #333;
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 3px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.vip-locked {
+    background-color: #f0f0f0;
+    border: 2px dashed #ddd;
+    padding: 20px;
+    text-align: center;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.vip-button {
+    display: inline-block;
+    background-color: #2271b1;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin: 10px 5px;
+}
+
+.vip-button:hover {
+    background-color: #135e96;
+    color: white;
+}
