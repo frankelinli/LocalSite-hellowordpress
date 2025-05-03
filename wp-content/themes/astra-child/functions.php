@@ -870,7 +870,7 @@ function add_login_logout_menu_item($items, $args) {
     }
     
     // 创建菜单项HTML
-    $button_item = '<li class="menu-item menu-item-button">';
+    $button_item = '<li>';
     $button_item .= '<a href="' . esc_url($button_url) . '" class="' . esc_attr($button_class) . '">' . esc_html($button_text) . '</a>';
     $button_item .= '</li>';
     
@@ -881,47 +881,5 @@ function add_login_logout_menu_item($items, $args) {
 }
 add_filter('wp_nav_menu_items', 'add_login_logout_menu_item', 10, 2);
 
-/**
- * 为登录/退出按钮添加样式
- */
-function add_login_logout_button_styles() {
-    $styles = '
-    .menu-item-button {
-        margin-left: 10px;
-        display: flex;
-        align-items: center;
-    }
-    
-    .menu-button {
-        background-color: #0274be;
-        color: #ffffff !important;
-        border-radius: 3px;
-        padding: 8px 16px;
-        font-size: 14px;
-        text-decoration: none;
-        transition: all 0.2s ease;
-    }
-    
-    .menu-button:hover {
-        background-color: #0258a8;
-        color: #ffffff !important;
-    }
-    
-    /* 移动端适配 */
-    @media (max-width: 921px) {
-        .menu-item-button {
-            margin: 10px 0;
-        }
-        
-        .menu-button {
-            display: block;
-            text-align: center;
-            width: 100%;
-        }
-    }
-    ';
-    
-    wp_add_inline_style('astra-child-theme-css', $styles);
-}
-add_action('wp_enqueue_scripts', 'add_login_logout_button_styles');
+
 //====================================================================
