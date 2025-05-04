@@ -22,49 +22,6 @@ function child_enqueue_styles()
 add_action('wp_enqueue_scripts', 'child_enqueue_styles', 15);
 
 
-function modify_entry_meta($output)
-{
-    if (is_single()) {
-        $print_button = '<span class="posted-on print-button"><a href="javascript:window.print();">打印</a></span>';
-        $qr_share = '<span class="posted-on qr-share"><a href="#" class="qr-trigger">分享</a><div class="qr-popup"><div id="qrcode"></div></div></span>';
-
-        // 查找 entry-meta 结束标签的位置
-        $pos = strrpos($output, '</div>');
-
-        if ($pos !== false) {
-            // 在 </div> 之前插入打印按钮和二维码分享
-            $output = substr_replace($output, $print_button . $qr_share, $pos, 0);
-        }
-
-        // 在页脚添加 qrcode.js 库
-        wp_enqueue_script('qrcode-js', 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js', array('jquery'), null, true);
-
-        // 添加自定义 JavaScript
-        wp_add_inline_script('qrcode-js', '
-            jQuery(document).ready(function($) {
-                var qrcode = new QRCode(document.getElementById("qrcode"), {
-                    text: window.location.href,
-                    width: 100,
-                    height: 100,
-                    colorDark : "#000000",
-                    colorLight : "#ffffff",
-                    correctLevel : QRCode.CorrectLevel.H
-                });
-                
-                $(".qr-trigger").hover(
-                    function() {
-                        $(this).next(".qr-popup").stop().fadeIn(200);
-                    },
-                    function() {
-                        $(this).next(".qr-popup").stop().fadeOut(200);
-                    }
-                );
-            });
-        ');
-    }
-    return $output;
-}
-add_filter('astra_single_post_meta', 'modify_entry_meta');
 
 
 // add_action( 'astra_content_top', 'my_custom_content_top' );
@@ -144,67 +101,6 @@ add_action('wp_enqueue_scripts', 'enqueue_docsidebar_scripts');
 
 
 
-
-// / 使用 ACF字段和Astra 钩子在文章内容顶部显示作者头像
-add_action('astra_entry_top', 'display_custom_author_avatar');
-
-function display_custom_author_avatar()
-{
-    // 仅在单篇文章页面显示
-    if (!is_single()) {
-        return;
-    }
-
-    // 获取文章作者的 ID
-    $author_id = get_the_author_meta('ID');
-
-    // 获取作者头像字段（ACF）
-    $author_avatar = get_field('custom_author_avatar', 'user_' . $author_id);
-
-    // 如果设置了自定义头像，显示头像；否则显示默认 Gravatar
-    if ($author_avatar) {
-        echo '<div class="custom-author-avatar" style="text-align: center; margin-bottom: 20px;">';
-        echo '<img src="' . esc_url($author_avatar['url']) . '" alt="作者头像" style="width: 100px; height: 100px; border-radius: 50%;">';
-        echo '</div>';
-    } else {
-        // 显示默认 Gravatar
-        echo '<div class="custom-author-avatar" style="text-align: center; margin-bottom: 20px;">';
-        echo get_avatar($author_id, 100);
-        echo '</div>';
-    }
-}
-
-
-
-// 获取ACF当前分类的特色图像, 使用 Astra 钩子在文章内容底部显示分类特色图像
-function get_current_category_featured_image()
-{
-    if (is_single()) { // 确保只在单篇文章页面执行
-        // 获取当前文章的分类
-        $categories = get_the_category();
-        if (!empty($categories)) {
-            // 获取第一个分类（或主分类）
-            $category_id = $categories[0]->term_id;
-
-            // 从 ACF 获取分类的特色图像
-            $category_featured_image = get_field('category_featured_image', 'category_' . $category_id);
-
-            // 如果存在分类特色图像，返回 HTML
-            if ($category_featured_image && isset($category_featured_image['url'])) {
-                return '<div class="category-featured-image">
-                            <img src="' . esc_url($category_featured_image['url']) . '" alt="' . esc_attr($categories[0]->name) . '" style="width: 100%; max-width: 800px; height: auto;">
-                        </div>';
-            }
-        }
-    }
-    return ''; // 如果没有图片或不在单篇文章页面，返回空
-}
-add_action('astra_entry_bottom', 'display_category_featured_image');
-function display_category_featured_image()
-{
-    // 获取并输出分类的特色图像
-    echo get_current_category_featured_image();
-}
 
 
 // 创建收藏按钮动作
@@ -553,35 +449,6 @@ function display_left_doc_sidebar()
 add_action('astra_content_top', 'display_left_doc_sidebar');
 
 
-//页眉下划线弹出动画渐隐
-function add_header_underline_animation()
-{
-?>
-    <style>
-        .main-header-menu a {
-            position: relative;
-        }
-
-        .main-header-menu a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -2px;
-            left: 0;
-            background-color: currentColor;
-            /* 增加过渡时间，使用 ease-out 使动画更自然 */
-            transition: width 0.3s ease-out;
-            opacity: 1;
-        }
-
-        .main-header-menu a:hover::after {
-            width: 100%;
-        }
-    </style>
-<?php
-}
-add_action('wp_head', 'add_header_underline_animation');
 
 
 // 注册新的侧边栏left_doc_sidebar，single post在用；
@@ -602,87 +469,7 @@ add_action('wp_head', 'add_header_underline_animation');
 
 
 
-
-
-
-
-
-// 添加到functions.php
-function add_custom_breadcrumb()
-{
-    // 只在单篇文章页面显示
-    if (!is_single()) {
-        return;
-    }
-
-    // 获取当前文章的分类
-    $categories = get_the_category();
-    $category = !empty($categories) ? $categories[0] : null;
-
-    // 构建HTML
-    $html = '<div class="custom-breadcrumb">';
-
-    // 首页链接
-    $html .= '<a href="' . home_url() . '">首页</a>';
-    $html .= '<span class="separator"> > </span>';
-
-    // 分类链接
-    if ($category) {
-        $html .= '<a href="' . get_category_link($category->term_id) . '">';
-        $html .= $category->name;
-        $html .= '</a>';
-        $html .= '<span class="separator"> > </span>';
-    }
-
-    // 当前文章标题
-    $html .= '<span class="current">' . get_the_title() . '</span>';
-
-    $html .= '</div>';
-
-    // 输出HTML
-    echo $html;
-}
-
-// 添加样式
-function add_breadcrumb_styles()
-{
-?>
-    <style>
-        .custom-breadcrumb {
-            padding: 10px 0;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .custom-breadcrumb a {
-            color: #666;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .custom-breadcrumb a:hover {
-            color: #9800ff;
-        }
-
-        .custom-breadcrumb .separator {
-            margin: 0 8px;
-            color: #999;
-        }
-
-        .custom-breadcrumb .current {
-            color: #333;
-            font-weight: 500;
-        }
-    </style>
-<?php
-}
-
-// 使用Astra钩子添加面包屑
-add_action('astra_content_before', 'add_custom_breadcrumb');
-// 添加样式
-add_action('astra_head_top', 'add_breadcrumb_styles');
-
+//=================================================================================
 
 // 支付测试
 /**
@@ -713,117 +500,11 @@ function csrwiki_display_post_tags()
 add_action('astra_entry_bottom', 'csrwiki_display_post_tags');
 
 
-// 在functions.php中添加以下代码
-function register_book_post_type()
-{
-    $labels = array(
-        'name' => '书籍',
-        'singular_name' => '书籍',
-        'menu_name' => '书籍'
-    );
-
-    $args = array(
-        'labels' => $labels,
-        'public' => true,
-        'has_archive' => true,
-        'menu_icon' => 'dashicons-book',
-        'supports' => array('title', 'editor', 'thumbnail'),
-        'rewrite' => array(
-            'slug' => 'books',           // URL会变成 csrwiki.com/books/文章名
-            'with_front' => false        // 禁用默认固定链接前缀
-        )
-    );
-
-    register_post_type('book', $args);
-}
-add_action('init', 'register_book_post_type');
-
-
-// 添加文章来源meta box
-function add_article_source_meta_box()
-{
-    add_meta_box(
-        'article_source_box', // ID
-        '文章来源', // 标题
-        'article_source_callback', // 回调函数
-        'post', // 文章类型
-        'side', // 位置
-        'high' // 优先级
-    );
-}
-add_action('add_meta_boxes', 'add_article_source_meta_box');
-
-// meta box回调函数
-function article_source_callback($post)
-{
-    wp_nonce_field('article_source_save', 'article_source_nonce');
-    $source = get_post_meta($post->ID, '_article_source', true);
-?>
-    <select name="article_source" id="article_source">
-        <option value="">请选择来源</option>
-        <option value="original" <?php selected($source, 'original'); ?>>原创</option>
-        <option value="translated" <?php selected($source, 'translated'); ?>>翻译</option>
-        <option value="repost" <?php selected($source, 'repost'); ?>>转载</option>
-    </select>
-<?php
-}
-
-// 保存meta数据
-function save_article_source($post_id)
-{
-    if (!isset($_POST['article_source_nonce'])) return;
-    if (!wp_verify_nonce($_POST['article_source_nonce'], 'article_source_save')) return;
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
-
-    if (isset($_POST['article_source'])) {
-        update_post_meta($post_id, '_article_source', $_POST['article_source']);
-    }
-}
-add_action('save_post', 'save_article_source');
-
-
-
-function display_article_source($content)
-{
-    if (is_single()) {
-        $post_id = get_the_ID();
-        $source = get_post_meta($post_id, '_article_source', true);
-
-        $source_text = '';
-        $source_class = '';
-
-        switch ($source) {
-            case 'original':
-                $source_text = '原创';
-                $source_class = 'source-original';
-                break;
-            case 'translated':
-                $source_text = '翻译';
-                $source_class = 'source-translated';
-                break;
-            case 'repost':
-                $source_text = '转载';
-                $source_class = 'source-repost';
-                break;
-        }
-
-        if ($source) {
-            $tag = sprintf('<span class="article-source-tag %s">%s</span>', $source_class, $source_text);
-            return $tag . $content;
-        }
-    }
-    return $content;
-}
-add_filter('the_content', 'display_article_source');
-
 
 
 
 //引入维护模式设置文件
 require_once get_stylesheet_directory() . '/inc/maintenance-mode.php';
-
-// 引入右下角弹窗.php
-// require_once get_stylesheet_directory() . '/inc/右下角弹窗.php';
 
 
 
@@ -883,3 +564,155 @@ add_filter('wp_nav_menu_items', 'add_login_logout_menu_item', 10, 2);
 
 
 //====================================================================
+
+
+
+// 修改摘要长度
+function custom_excerpt_length($length) {
+    return 120; // 设置你想要的摘要字数
+}
+add_filter('excerpt_length', 'custom_excerpt_length', 999);
+
+// 可选：自定义摘要末尾显示的内容
+function custom_excerpt_more($more) {
+    return '>>>'; // 设置摘要结尾的显示内容
+}
+add_filter('excerpt_more', 'custom_excerpt_more');
+
+//=======================================================================
+
+// 在文章内容后添加阅读按钮
+function add_read_button_after_excerpt() {
+    if (is_archive() || is_home() || is_search()) {
+        echo '<div class="read-more-button-wrap"><a href="' . esc_url(get_permalink()) . '" class="read-more-button">阅读</a></div>';
+    }
+}
+add_action('astra_entry_content_after', 'add_read_button_after_excerpt', 10);
+
+
+//===========================================================================
+
+
+
+/**
+ * 给inc目录下的小功能增加可视化的开启、关闭开关；方便快速测试、预览
+ */
+function haowiki_theme_settings_page() {
+    add_menu_page(
+        '主题功能设置',
+        '主题功能',
+        'manage_options',
+        'haowiki-settings',
+        'haowiki_render_settings_page',
+        'dashicons-admin-generic',
+        60
+    );
+}
+add_action('admin_menu', 'haowiki_theme_settings_page');
+
+/**
+ * 渲染设置页面
+ */
+function haowiki_render_settings_page() {
+    ?>
+    <div class="wrap">
+        <h1>主题功能设置</h1>
+        <form method="post" action="options.php">
+            <?php
+            settings_fields('haowiki_theme_options');
+            do_settings_sections('haowiki-settings');
+            submit_button();
+            ?>
+        </form>
+    </div>
+    <?php
+}
+
+/**
+ * 获取inc目录中的所有PHP文件
+ */
+function haowiki_get_inc_files() {
+    $inc_dir = get_stylesheet_directory() . '/inc';
+    $files = array();
+    
+    if (is_dir($inc_dir)) {
+        $dir_contents = scandir($inc_dir);
+        
+        foreach ($dir_contents as $file) {
+            $file_path = $inc_dir . '/' . $file;
+            if (is_file($file_path) && pathinfo($file_path, PATHINFO_EXTENSION) === 'php') {
+                // 获取不带扩展名的文件名作为功能ID
+                $module_id = pathinfo($file, PATHINFO_FILENAME);
+                
+                // 读取文件头部注释以获取功能名称
+                $file_content = file_get_contents($file_path);
+                $module_name = $module_id; // 默认名称
+                
+                // 尝试从文件注释中提取功能名称
+                if (preg_match('/\*\s*功能名称:\s*(.+)$/mi', $file_content, $matches)) {
+                    $module_name = trim($matches[1]);
+                }
+                
+                $files[$module_id] = array(
+                    'name' => $module_name,
+                    'path' => $file_path
+                );
+            }
+        }
+    }
+    
+    return $files;
+}
+
+/**
+ * 注册设置选项
+ */
+function haowiki_register_settings() {
+    register_setting('haowiki_theme_options', 'haowiki_enabled_modules');
+    
+    add_settings_section(
+        'haowiki_modules_section',
+        '可用功能模块',
+        function() { echo '选择要启用的功能模块:'; },
+        'haowiki-settings'
+    );
+    
+    // 自动获取模块列表
+    $modules = haowiki_get_inc_files();
+    $enabled_modules = get_option('haowiki_enabled_modules', array());
+    
+    // 添加复选框
+    foreach ($modules as $id => $module) {
+        add_settings_field(
+            'module_' . $id,
+            $module['name'],
+            function() use ($id, $enabled_modules) {
+                $checked = in_array($id, (array)$enabled_modules) ? 'checked' : '';
+                echo '<input type="checkbox" id="' . $id . '" name="haowiki_enabled_modules[]" value="' . $id . '" ' . $checked . '>';
+            },
+            'haowiki-settings',
+            'haowiki_modules_section'
+        );
+    }
+}
+add_action('admin_init', 'haowiki_register_settings');
+
+/**
+ * 加载已启用的模块
+ */
+function haowiki_load_enabled_modules() {
+    $enabled_modules = get_option('haowiki_enabled_modules', array());
+    $available_modules = haowiki_get_inc_files();
+    
+    // 加载启用的模块
+    foreach ((array)$enabled_modules as $module_id) {
+        if (isset($available_modules[$module_id])) {
+            require_once $available_modules[$module_id]['path'];
+        }
+    }
+}
+add_action('after_setup_theme', 'haowiki_load_enabled_modules');
+
+
+
+//=======================================================================
