@@ -34,6 +34,8 @@ function add_custom_breadcrumb()
 
     $html .= '</div>';
 
+    
+
     // 输出HTML
     echo $html;
 }
@@ -77,3 +79,4 @@ function add_breadcrumb_styles()
 add_action('astra_content_before', 'add_custom_breadcrumb');
 // 添加样式
 add_action('astra_head_top', 'add_breadcrumb_styles');
+

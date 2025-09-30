@@ -433,25 +433,24 @@ function filter_admin_only_blocks($block_content, $block)
 
 
 
-// 通过钩子astra_content_top,实现single post三栏布局。左侧是docsidebar，中间是主内容，右侧也加载了侧边栏
-//注意astra我设置的是默认右侧边栏，此处代码是注入左侧边栏
-function display_left_doc_sidebar()
-{
-    // 检查是否是单篇文章页面,只在单文章页面显示，且csr分类下的文章不显示。
-    if (is_single() && !has_category('csr')) {
-        if (is_active_sidebar('left-doc')) {
-            echo '<div class="left-doc-sidebar">';
-            dynamic_sidebar('left-doc');
-            echo '</div>'; // 关闭div，非常重要。如果注入top，则需要这个关闭div;如果注入bottom，则不需要这个关闭div
-        }
-    }
-}
-add_action('astra_content_top', 'display_left_doc_sidebar');
+// // 通过钩子astra_content_top,实现single post三栏布局。左侧是docsidebar，中间是主内容，右侧也加载了侧边栏
+// //注意astra我设置的是默认右侧边栏，此处代码是注入左侧边栏
+// function display_left_doc_sidebar()
+// {
+//     // 检查是否是单篇文章页面,只在单文章页面显示，且csr分类下的文章不显示。
+//     if (is_single() && !has_category('csr')) {
+//         if (is_active_sidebar('left-doc')) {
+//             echo '<div class="left-doc-sidebar">';
+//             dynamic_sidebar('left-doc');
+//             echo '</div>'; // 关闭div，非常重要。如果注入top，则需要这个关闭div;如果注入bottom，则不需要这个关闭div
+//         }
+//     }
+// }
+// add_action('astra_content_top', 'display_left_doc_sidebar');
 
 
 
-
-// 注册新的侧边栏left_doc_sidebar，single post在用；
+// // 注册新的侧边栏left_doc_sidebar，single post在用；
 // function register_left_doc_sidebar() {
 //     register_sidebar(array(
 //         'name'          => 'Left Doc Sidebar',
@@ -467,6 +466,26 @@ add_action('astra_content_top', 'display_left_doc_sidebar');
 
 
 
+
+// // 注册自定义菜单位置
+// function register_docs_menu() {
+//     register_nav_menu('docs-menu',__( 'Docs Menu' ));
+// }
+// add_action( 'after_setup_theme', 'register_docs_menu' );
+
+// // 把菜单显示在某个 Astra Hook 位置（比如内容区左边）
+// add_action('astra_content_top','add_docs_sidebar');
+// function add_docs_sidebar(){
+//     if ( is_singular('post') || is_page() ) {   // 只在文章/页面里显示
+//         echo '<aside class="docs-sidebar">';
+//         wp_nav_menu(array(
+//             'theme_location' => 'docs-menu',
+//             'container' => false,
+//             'menu_class' => 'docs-menu',
+//         ));
+//         echo '</aside>';
+//     }
+// }
 
 
 //=================================================================================
@@ -510,7 +529,7 @@ require_once get_stylesheet_directory() . '/inc/maintenance-mode.php';
 
 //====================================================================
 
-
+//给全站代码高亮
 function enqueue_highlightjs_cdn() {
     // 加载 Highlight.js 的 CSS（可以更换为你喜欢的样式主题）
     wp_enqueue_style('highlightjs-style', 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css');
@@ -591,7 +610,6 @@ add_action('astra_entry_content_after', 'add_read_button_after_excerpt', 10);
 
 
 //===========================================================================
-
 
 
 /**
@@ -713,6 +731,65 @@ function haowiki_load_enabled_modules() {
 }
 add_action('after_setup_theme', 'haowiki_load_enabled_modules');
 
-
-
 //=======================================================================
+
+//==============================================================================
+
+
+add_action('admin_notices', function () {
+    $screen = get_current_screen();
+    if ($screen && $screen->id === 'options-media') {
+        global $_wp_additional_image_sizes;
+
+        echo '<div style="background:#111;color:#0f0;padding:10px;margin-bottom:20px;"><pre style="margin:0;">';
+        echo "=== WordPress本身已注册的图片尺寸 ===\n";
+
+        // 核心默认尺寸
+        echo "thumbnail: " . get_option('thumbnail_size_w') . "x" . get_option('thumbnail_size_h') . " (crop: " . (get_option('thumbnail_crop') ? 'true' : 'false') . ")\n";
+        echo "medium: " . get_option('medium_size_w') . "x" . get_option('medium_size_h') . "\n";
+        echo "medium_large: " . get_option('medium_large_size_w') . "x" . get_option('medium_large_size_h') . "\n";
+        echo "large: " . get_option('large_size_w') . "x" . get_option('large_size_h') . "\n";
+
+        // 额外注册的尺寸
+        if (!empty($_wp_additional_image_sizes)) {
+            foreach ($_wp_additional_image_sizes as $name => $size) {
+                echo $name . ': ' . $size['width'] . 'x' . $size['height'] . ' (crop: ' . ($size['crop'] ? 'true' : 'false') . ")\n";
+            }
+        } else {
+            echo "没有额外注册的尺寸\n";
+        }
+
+        echo '</pre></div>';
+    }
+});
+
+
+add_action( 'init', function() {
+    remove_image_size( 'large' );
+    remove_image_size( '1536x1536' );
+    remove_image_size( '2048x2048' );
+}, 20 );
+
+add_filter( 'intermediate_image_sizes_advanced', function( $sizes ) {
+    unset( $sizes['large'] );
+    unset( $sizes['1536x1536'] );
+    unset( $sizes['2048x2048'] );
+    return $sizes;
+} );
+
+add_filter( 'big_image_size_threshold', '__return_false' );
+
+
+
+
+
+/**
+ * 在astra_content_after位置添加自定义内容
+ */
+function haowiki_astra_content_after_example() {
+    echo '<div style="background-color: #f0f0f0; padding: 10px; margin: 5px 0; border-left: 4px solid #0073aa;">
+        <p>此处使用astra_content_after钩子添加的内容</p>
+        <p>编辑functions.php中的<strong>haowiki_astra_content_after_example</strong>函数来修改此内容</p>
+    </div>';
+}
+add_action('astra_content_after', 'haowiki_astra_content_after_example');

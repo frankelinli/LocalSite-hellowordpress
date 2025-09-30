@@ -37,8 +37,10 @@ function add_top_announcement_bar() {
     <div class="announcement-bar">
         <span class="announcement-content">
             🦖 Docusaurus v3.6 is out! 🥳
-        </span>
+        </span> 
+        <span>使用astra_header_before</span>
         <button class="announcement-close">×</button>
+        
     </div>
     <style>
         :root {

@@ -224,7 +224,7 @@ pre {
     border: none;
     border-radius: 3px;
     cursor: pointer;
-
+}
 /* Admonitions 区块样式已移动到各自的CSS文件中 */
 /* simple-note-block.css, tip-block.css, warning-block.css, info-block.css */
 
@@ -369,44 +369,31 @@ pre {
 
 
 
-.vip-content {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border: 1px solid #e0e0e0;
-    margin: 20px 0;
-    border-radius: 5px;
-}
 
-.vip-badge {
-    background-color: #ffcc00;
+
+
+/* 代码块样式 - 匹配浅灰色背景 */
+pre, code, .wp-block-code {
+    background-color:#F6F8FA; /* 浅灰色背景 */
+    border-radius: 6px;
+    padding: 15px;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 1.5;
     color: #333;
-    display: inline-block;
-    padding: 5px 15px;
+    overflow-x: auto;
+    width: 100%;
+    margin-bottom: 20px;
+    border: none; /* 移除边框 */
+}
+
+/* 内联代码样式 */
+p code, li code {
+    background-color: #f8f9fa;
+    padding: 2px 6px;
     border-radius: 3px;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-
-.vip-locked {
-    background-color: #f0f0f0;
-    border: 2px dashed #ddd;
-    padding: 20px;
-    text-align: center;
-    margin: 20px 0;
-    border-radius: 5px;
-}
-
-.vip-button {
-    display: inline-block;
-    background-color: #2271b1;
-    color: white;
-    padding: 10px 15px;
-    text-decoration: none;
-    border-radius: 4px;
-    margin: 10px 5px;
-}
-
-.vip-button:hover {
-    background-color: #135e96;
-    color: white;
+    font-family: monospace;
+    font-size: 0.9em;
+    color: #333;
+    border: none; /* 移除边框 */
 }

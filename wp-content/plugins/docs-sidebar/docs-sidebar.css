@@ -1,0 +1,53 @@
+.docs-sidebar {
+    border: 1px solid #ddd;
+    background: #f9f9f9;
+    padding: 15px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-right: 25px;
+    border-radius: 6px;
+    position: sticky;
+    top: 20px;
+    /* sticky 粘性；距离顶部 20px */
+    font-family: Arial, sans-serif;
+        max-height: 80vh;    /* 设置最大高度 */
+    overflow-y: auto;  /* 超出部分显示滚动条 */
+
+}
+
+.docs-sidebar .doc-menu-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+}
+
+.docs-sidebar .doc-menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.docs-sidebar .doc-menu-item {
+    margin-bottom: 6px;
+}
+
+.docs-sidebar .doc-menu-item a {
+    text-decoration: none;
+    color: #0073aa;
+}
+
+.docs-sidebar .doc-menu-item a:hover {
+    text-decoration: underline;
+}
+
+.docs-sidebar .doc-menu-item.current-doc a {
+    font-weight: bold;
+    color: #d54e21;
+}
+
+.docs-sidebar .no-docs-message {
+    font-style: italic;
+    color: #666;
+}

@@ -1,0 +1,124 @@
+/* Test Template 独立样式文件（用于测试）
+   不要合并到主题主样式，方便单独启用/禁用 */
+
+/* 缩略图美化样式 */
+/* 美化的文章卡片样式 */
+
+
+/* ...existing code... */
+/* 极简表格样式 */
+.recent-posts-list {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.post-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 120px;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #ddd;
+    transition: all .2s ease;
+    background: #fdfdfd;
+}
+
+.post-row:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.post-row:hover {
+    background-color: #e8f4fd !important;
+    transform: translateX(4px);
+    border-left: 3px solid #0073aa;
+    padding-left: 17px;
+}
+
+.post-row:last-child {
+    border-bottom: none;
+}
+
+/* 缩略图列 */
+.post-thumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.thumb-img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 4px;
+    display: block;
+}
+
+.no-thumb {
+    width: 48px;
+    height: 48px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #999;
+}
+
+/* 标题列 */
+.post-title {
+    padding: 0 16px;
+}
+
+.post-title a {
+    color: #333;
+    text-decoration: none;
+    font-size: 0.95em;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.post-title a:hover {
+    color: #0073aa;
+}
+
+/* 日期列 */
+.post-date {
+    font-size: 0.85em;
+    color: #666;
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* 响应式 */
+@media (max-width: 600px) {
+    .post-row {
+        grid-template-columns: 40px 1fr 80px;
+        padding: 12px 16px;
+    }
+    
+    .thumb-img, .no-thumb {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .post-title {
+        padding: 0 12px;
+    }
+    
+    .post-title a {
+        font-size: 0.9em;
+    }
+    
+    .post-date {
+        font-size: 0.8em;
+    }
+}
+
+/* 全宽度两栏布局 */
+.tpl-container { display:flex; gap:32px; align-items:flex-start; max-width:100%; margin:0; padding:24px; }
+.tpl-main { flex:1 1 auto; max-width:none; }
+.tpl-sidebar { width:320px; flex:0 0 320px; }
+@media (max-width:900px){ .tpl-container { flex-direction:column; padding:16px; gap:24px; } .tpl-sidebar { width:100%; } }
