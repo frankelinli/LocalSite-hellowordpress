@@ -397,3 +397,17 @@ p code, li code {
     color: #333;
     border: none; /* 移除边框 */
 }
+
+/* 限制单篇文章的特色图像尺寸为300 */
+/* .single-post .wp-post-image {
+    max-width: 900px;
+    max-height: 383px;
+    display: block;
+    margin: 0 auto;
+} */
+
+
+
+.ast-separate-container .site-content .ast-single-post-featured-section + article {
+    margin-top: 10px;
+}

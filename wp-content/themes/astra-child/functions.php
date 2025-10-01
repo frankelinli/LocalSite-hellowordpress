@@ -361,23 +361,6 @@ function my_editor_scripts()
     );
 }
 
-// // 处理前端显示逻辑
-// add_filter('render_block', 'filter_admin_only_blocks', 10, 2);
-// function filter_admin_only_blocks($block_content, $block)
-// {
-//     // 如果块没有设置adminOnly属性，直接返回原内容
-//     if (empty($block['attrs']) || !isset($block['attrs']['adminOnly'])) {
-//         return $block_content;
-//     }
-
-//     // 只有设置了adminOnly时才检查权限
-//     if ($block['attrs']['adminOnly'] && !current_user_can('manage_options')) {
-//         return '';
-//     }
-
-//     return $block_content;
-// }
-
 
 // 首先注册样式
 add_action('wp_head', 'add_admin_only_block_styles');
@@ -735,7 +718,7 @@ add_action('after_setup_theme', 'haowiki_load_enabled_modules');
 
 //==============================================================================
 
-
+// 在媒体设置页面显示所有注册的图片尺寸
 add_action('admin_notices', function () {
     $screen = get_current_screen();
     if ($screen && $screen->id === 'options-media') {
@@ -763,15 +746,19 @@ add_action('admin_notices', function () {
     }
 });
 
-
+// remove_image_size 只能移除通过 add_image_size 注册的尺寸，无法移除核心默认的尺寸
+// 所以我们通过两个步骤来禁用不需要的尺寸：
+// 1. 使用 remove_image_size 移除通过 add_image_size 注册的尺寸（如果有的话）
+// 2. 使用 intermediate_image_sizes_advanced 过滤器来阻止生成这些尺寸
+// 3. 禁用大图裁剪功能，防止生成 2560px 以上的大图尺寸  
 add_action( 'init', function() {
-    remove_image_size( 'large' );
+    // remove_image_size( 'large' );
     remove_image_size( '1536x1536' );
     remove_image_size( '2048x2048' );
 }, 20 );
-
+// disable generation of large, 1536x1536, and 2048x2048 sizes
 add_filter( 'intermediate_image_sizes_advanced', function( $sizes ) {
-    unset( $sizes['large'] );
+    // unset( $sizes['large'] );
     unset( $sizes['1536x1536'] );
     unset( $sizes['2048x2048'] );
     return $sizes;
@@ -780,16 +767,30 @@ add_filter( 'intermediate_image_sizes_advanced', function( $sizes ) {
 add_filter( 'big_image_size_threshold', '__return_false' );
 
 
+// 注册微信公众号风格的大封面图（居中裁剪）
+// add_image_size( 'wechat-large-cover', 900, 383, true );
+
+// // 注册微信公众号风格的小封面图（居中裁剪）
+// add_image_size( 'wechat-square-cover', 383, 383, true );
 
 
 
-/**
- * 在astra_content_after位置添加自定义内容
- */
-function haowiki_astra_content_after_example() {
-    echo '<div style="background-color: #f0f0f0; padding: 10px; margin: 5px 0; border-left: 4px solid #0073aa;">
-        <p>此处使用astra_content_after钩子添加的内容</p>
-        <p>编辑functions.php中的<strong>haowiki_astra_content_after_example</strong>函数来修改此内容</p>
-    </div>';
-}
-add_action('astra_content_after', 'haowiki_astra_content_after_example');
+
+
+// 强制指定特色图像大小为 wechat-large-cover
+// add_filter('post_thumbnail_size', 'use_wechat_large_cover_size');
+// function use_wechat_large_cover_size($size) {
+//     if (is_single()) {
+//         return 'wechat-large-cover';
+//     }
+//     return $size;
+// }
+
+// 强制指定文章正文的特色图像采用medium尺寸
+// add_filter('post_thumbnail_size', 'use_medium_size');
+// function use_medium_size($size) {
+//     if (is_single()) {
+//         return 'medium_large'; // 或者 'medium'，根据你的需求选择
+//     }
+//     return $size;
+// }

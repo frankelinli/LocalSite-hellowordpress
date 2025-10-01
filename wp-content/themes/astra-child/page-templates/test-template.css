@@ -92,6 +92,64 @@
     white-space: nowrap;
 }
 
+/* 分页样式 */
+.pagination-wrapper {
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination-wrapper .page-numbers {
+    display: inline-flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 4px;
+}
+
+.pagination-wrapper .page-numbers li {
+    margin: 0;
+}
+
+.pagination-wrapper .page-numbers a,
+.pagination-wrapper .page-numbers span {
+    display: inline-block;
+    padding: 8px 12px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+    font-size: 0.9em;
+    transition: all .2s ease;
+    min-width: 20px;
+    text-align: center;
+}
+
+.pagination-wrapper .page-numbers a:hover {
+    background: #0073aa;
+    color: white;
+    border-color: #0073aa;
+}
+
+.pagination-wrapper .page-numbers .current {
+    background: #0073aa;
+    color: white;
+    border-color: #0073aa;
+    font-weight: 600;
+}
+
+.pagination-wrapper .page-numbers .prev,
+.pagination-wrapper .page-numbers .next {
+    font-weight: 500;
+}
+
+.pagination-wrapper .page-numbers .dots {
+    border: none;
+    background: none;
+    color: #999;
+    cursor: default;
+}
+
 /* 响应式 */
 @media (max-width: 600px) {
     .post-row {
@@ -114,6 +172,13 @@
     
     .post-date {
         font-size: 0.8em;
+    }
+
+    .pagination-wrapper .page-numbers a,
+    .pagination-wrapper .page-numbers span {
+        padding: 6px 8px;
+        font-size: 0.85em;
+        min-width: 16px;
     }
 }
 
